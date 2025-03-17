@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ร่วมงานกับเรา - บริษัท เค โลจิสติกส์ จำกัด</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <strong>K LOGISTICS</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">หน้าหลัก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">เกี่ยวกับเรา</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="services.html">บริการ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="careers.html">ร่วมงานกับเรา</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">ติดต่อเรา</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="py-5 bg-primary text-white text-center">
+        <div class="container">
+            <h1>ร่วมงานกับเรา</h1>
+            <p class="lead">มาร่วมเป็นส่วนหนึ่งของทีมงานมืออาชีพกับ K Logistics</p>
+        </div>
+    </header>
+
+    <!-- Career Opportunities Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h2>ตำแหน่งงานที่เปิดรับ</h2>
+                    <p>เรากำลังมองหาบุคลากรที่มีความสามารถและกระตือรือร้นในการทำงาน เพื่อร่วมเป็นส่วนหนึ่งในการพัฒนาธุรกิจของเรา</p>
+               
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">พนักงานคลังสินค้า</h5>
+                            <p class="card-text">รับผิดชอบในการจัดการสินค้าในคลัง การตรวจรับ และการจัดส่งสินค้า</p>
+                            <p><strong>คุณสมบัติ:</strong> วุฒิ ม.3 ขึ้นไป, สามารถทำงานเป็นกะได้</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">เจ้าหน้าที่ฝ่ายลูกค้าสัมพันธ์</h5>
+                            <p class="card-text">รับผิดชอบในการติดต่อประสานงานกับลูกค้า และแก้ไขปัญหาต่างๆ</p>
+                            <p><strong>คุณสมบัติ:</strong> วุฒิ ปวส. ขึ้นไป, มีทักษะการสื่อสารที่ดี</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-8">
+                    <h2>สมัครงานกับเรา</h2>
+                    <p>กรอกข้อมูลด้านล่างเพื่อสมัครงานกับ K Logistics</p>
+                    
+                    <div class="career-form">
+                        <form id="careerForm">
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">1. ชื่อจริง - นามสกุล</label>
+                                <input type="text" class="form-control" id="fullName" name="fullName" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="position" class="form-label">2. ตำแหน่งที่ต้องการสมัคร</label>
+                                <select class="form-select" id="position" name="position" required>
+                                    <option value="" selected disabled>กรุณาเลือกตำแหน่ง</option>
+                                    <option value="พนักงานประจำ">พนักงานประจำ</option>
+                                    <option value="พนักงานพาร์ทไทม์">พนักงานพาร์ทไทม์</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">3. เบอร์โทรศัพท์</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="age" class="form-label">4. อายุ</label>
+                                <input type="number" class="form-control" id="age" name="age" min="18" max="60" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="province" class="form-label">5. จังหวัด</label>
+                                <input type="text" class="form-control" id="province" name="province" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="occupation" class="form-label">6. อาชีพ</label>
+                                <input type="text" class="form-control" id="occupation" name="occupation" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="monthlyIncome" class="form-label">7. รายได้ต่อเดือน</label>
+                                <input type="text" class="form-control" id="monthlyIncome" name="monthlyIncome" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="expectedDailyIncome" class="form-label">8. รายได้ที่คาดหวังต่อวันกับบริษัทของเรา</label>
+                                <input type="text" class="form-control" id="expectedDailyIncome" name="expectedDailyIncome" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="workHistory" class="form-label">9. ประวัติการทำงานก่อนหน้า</label>
+                                <textarea class="form-control" id="workHistory" name="workHistory" rows="3" required></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="contact" class="form-label">10. ช่องทางการติดต่อ ID Line/facebook</label>
+                                <input type="text" class="form-control" id="contact" name="contact" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="photo" class="form-label">ภาพถ่ายหน้าตรง 1 ภาพ</label>
+                                <input type="file" class="form-control" id="photo" name="photo" accept="image/*" required>
+                                <img id="imagePreview" class="image-preview" src="#" alt="ภาพตัวอย่าง">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">ส่งใบสมัคร</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>บริษัท เค โลจิสติกส์ จำกัด</h5>
+                    <p>ผู้ให้บริการโลจิสติกส์ครบวงจร</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>ลิงก์ด่วน</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white">หน้าหลัก</a></li>
+                        <li><a href="about.html" class="text-white">เกี่ยวกับเรา</a></li>
+                        <li><a href="services.html" class="text-white">บริการ</a></li>
+                        <li><a href="careers.html" class="text-white">ร่วมงานกับเรา</a></li>
+                        <li><a href="contact.html" class="text-white">ติดต่อเรา</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>ติดตามเรา</h5>
+                    <div class="social-icons">
+                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3 bg-light">
+            <div class="text-center">
+                <p class="mb-0">© 2023 บริษัท เค โลจิสติกส์ จำกัด. สงวนลิขสิทธิ์.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

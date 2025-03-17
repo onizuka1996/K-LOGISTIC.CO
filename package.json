@@ -1,0 +1,19 @@
+{
+  "name": "klogistic",
+  "version": "1.0.0",
+  "description": "K Logistic website",
+  "main": "index.js",
+  "scripts": {
+    "start": "serve",
+    "build": "echo 'No build step required'"
+  },
+  "keywords": [
+    "logistics",
+    "transportation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
