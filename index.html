@@ -44,21 +44,39 @@
     </nav>
 
     <!-- Hero Section -->
-    <header class="hero-section position-relative">
-        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80); background-size: cover; background-position: center; height: 80vh;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="hero-text bg-dark bg-opacity-50 p-4 rounded">
-                            <h1 class="text-white">บริษัท เค โลจิสติกส์ จำกัด</h1>
-                            <h2 class="text-white">K LOGISTICS COMPANY LIMITED</h2>
-                            <p class="lead text-white">ผู้ให้บริการโลจิสติกส์ครบวงจร ด้วยประสบการณ์และความเชี่ยวชาญ</p>
-                            <a href="contact.html" class="btn btn-primary btn-lg">ติดต่อเรา</a>
-                        </div>
+    <header class="hero-section position-relative" style="height: 80vh; background-color: #1a3b5c; overflow: hidden;">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="hero-text p-4 rounded">
+                        <h1 class="text-white">บริษัท เค โลจิสติกส์ จำกัด</h1>
+                        <h2 class="text-white">K LOGISTICS COMPANY LIMITED</h2>
+                        <p class="lead text-white">ผู้ให้บริการโลจิสติกส์ครบวงจร ด้วยประสบการณ์และความเชี่ยวชาญ</p>
+                        <a href="contact.html" class="btn btn-primary btn-lg">ติดต่อเรา</a>
                     </div>
                 </div>
             </div>
         </div>
+        <style>
+            .hero-section {
+                position: relative;
+                color: white;
+                text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            }
+            .hero-section::before {
+                content: "";
+                background-image: url("https://source.unsplash.com/pVoEPpLw818/1600x900");
+                background-position: center;
+                background-size: cover;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.7;
+                z-index: -1;
+            }
+        </style>
     </header>
 
     <!-- Services Section -->
