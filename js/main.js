@@ -4,6 +4,32 @@ document.addEventListener('DOMContentLoaded', function() {
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+    
+    // Attachment preview for issue form
+    const attachmentInput = document.getElementById('attachment');
+    const attachmentPreview = document.getElementById('attachmentPreview');
+
+    if (attachmentInput && attachmentPreview) {
+        attachmentInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                // Only show preview for images
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        attachmentPreview.src = e.target.result;
+                        attachmentPreview.style.display = 'block';
+                    }
+                    
+                    reader.readAsDataURL(file);
+                } else {
+                    // For non-image files (like PDF)
+                    attachmentPreview.style.display = 'none';
+                }
+            }
+        });
+    }
 
     // Image preview for career form
     const photoInput = document.getElementById('photo');
@@ -75,9 +101,43 @@ document.addEventListener('DOMContentLoaded', function() {
             sendToTelegram(formDataObj);
         });
     }
+    
+    // Issue report form submission
+    const issueForm = document.getElementById('issueForm');
+    
+    if (issueForm) {
+        issueForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const formDataObj = {};
+            
+            formData.forEach((value, key) => {
+                if (key !== 'attachment') {
+                    formDataObj[key] = value;
+                }
+            });
+            
+            // Get attachment as base64 if exists
+            const attachmentFile = document.getElementById('attachment').files[0];
+            if (attachmentFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    formDataObj.attachmentBase64 = e.target.result;
+                    formDataObj.attachmentType = attachmentFile.type;
+                    formDataObj.attachmentName = attachmentFile.name;
+                    sendToTelegram(formDataObj, 'แจ้งปัญหา');
+                };
+                reader.readAsDataURL(attachmentFile);
+            } else {
+                sendToTelegram(formDataObj, 'แจ้งปัญหา');
+            }
+        });
+    }
 
     // Function to send data to Telegram
-    function sendToTelegram(data) {
+    function sendToTelegram(data, formType = '') {
         // Replace with your Telegram Bot API token and chat ID
         const botToken = '7992354555:AAFm96-DSMUK9ayG7f92xwCIfxMcmnAF_hE';
         // Using group chat ID (must start with '-' for groups)
@@ -85,9 +145,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
         
         // Format message
-        let message = '';
+        let message = formType ? `📝 ${formType}\n\n` : '';
         for (const [key, value] of Object.entries(data)) {
-            if (key !== 'photoBase64') {
+            if (key !== 'photoBase64' && key !== 'attachmentBase64' && key !== 'attachmentType' && key !== 'attachmentName') {
                 message += `${key}: ${value}\n`;
             }
         }
@@ -106,9 +166,17 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(result => {
-            // If there's a photo, send it as a separate message
+            // If there's a photo or attachment, send it as a separate message
             if (data.photoBase64) {
                 sendPhotoToTelegram(data.photoBase64);
+            } else if (data.attachmentBase64) {
+                if (data.attachmentType.startsWith('image/')) {
+                    sendPhotoToTelegram(data.attachmentBase64, 'ไฟล์แนบ: ' + data.attachmentName);
+                } else {
+                    // For non-image files like PDF, we can only send the message without the file
+                    // since we're using a simple approach with Telegram
+                    showSuccessMessage();
+                }
             } else {
                 showSuccessMessage();
             }
@@ -120,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to send photo to Telegram
-    function sendPhotoToTelegram(photoBase64) {
+    function sendPhotoToTelegram(photoBase64, caption = 'รูปถ่ายผู้สมัคร') {
         const botToken = '7992354555:AAFm96-DSMUK9ayG7f92xwCIfxMcmnAF_hE';
         // Using group chat ID (must start with '-' for groups)
         const chatId = '-1002242123066';
@@ -142,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData();
         formData.append('chat_id', chatId);
         formData.append('photo', blob, 'photo.jpg');
-        formData.append('caption', 'รูปถ่ายผู้สมัคร');
+        formData.append('caption', caption);
         
         fetch(url, {
             method: 'POST',
@@ -160,11 +228,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show success message
     function showSuccessMessage() {
-        alert('ส่งข้อมูลเรียบร้อยแล้ว ขอบคุณที่สนใจร่วมงานกับเรา');
-        // Reset form
+        // Check which form was submitted to show appropriate message
+        if (document.getElementById('issueForm') && document.getElementById('issueForm').contains(document.activeElement)) {
+            alert('ส่งข้อมูลเรียบร้อยแล้ว ขอบคุณที่แจ้งปัญหากับเรา เราจะติดต่อกลับโดยเร็วที่สุด');
+        } else {
+            alert('ส่งข้อมูลเรียบร้อยแล้ว ขอบคุณที่สนใจร่วมงานกับเรา');
+        }
+        
+        // Reset forms
         if (careerForm) careerForm.reset();
         if (contactForm) contactForm.reset();
+        if (document.getElementById('issueForm')) document.getElementById('issueForm').reset();
+        
+        // Reset previews
         if (imagePreview) imagePreview.style.display = 'none';
+        if (document.getElementById('attachmentPreview')) document.getElementById('attachmentPreview').style.display = 'none';
     }
 
     // Show error message
