@@ -68,17 +68,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
+            // Add form type identifier
+            formDataObj.formType = 'ใบสมัครงาน';
+            
             // Get photo as base64 if exists
             const photoFile = photoInput.files[0];
             if (photoFile) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     formDataObj.photoBase64 = e.target.result;
-                    sendToTelegram(formDataObj);
+                    sendToTelegram(formDataObj, 'ใบสมัครงาน');
                 };
                 reader.readAsDataURL(photoFile);
             } else {
-                sendToTelegram(formDataObj);
+                sendToTelegram(formDataObj, 'ใบสมัครงาน');
             }
         });
     }
@@ -98,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 formDataObj[key] = value;
             });
             
-            sendToTelegram(formDataObj);
+            sendToTelegram(formDataObj, 'ติดต่อสอบถาม');
         });
     }
     
@@ -147,10 +150,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Format message
         let message = formType ? `📝 ${formType}\n\n` : '';
         for (const [key, value] of Object.entries(data)) {
-            if (key !== 'photoBase64' && key !== 'attachmentBase64' && key !== 'attachmentType' && key !== 'attachmentName') {
+            if (key !== 'photoBase64' && key !== 'attachmentBase64' && key !== 'attachmentType' && key !== 'attachmentName' && key !== 'formType') {
                 message += `${key}: ${value}\n`;
             }
         }
+        
+        console.log('Sending message to Telegram:', message);
         
         // Send text message
         fetch(url, {
@@ -164,11 +169,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 parse_mode: 'HTML'
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Message response status:', response.status);
+            return response.json();
+        })
         .then(result => {
+            console.log('Message sent successfully:', result);
             // If there's a photo or attachment, send it as a separate message
             if (data.photoBase64) {
-                sendPhotoToTelegram(data.photoBase64);
+                sendPhotoToTelegram(data.photoBase64, formType === 'ใบสมัครงาน' ? 'รูปถ่ายผู้สมัคร' : 'รูปภาพ');
             } else if (data.attachmentBase64) {
                 if (data.attachmentType.startsWith('image/')) {
                     sendPhotoToTelegram(data.attachmentBase64, 'ไฟล์แนบ: ' + data.attachmentName);
@@ -182,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error sending message:', error);
             showErrorMessage();
         });
     }
@@ -194,36 +203,47 @@ document.addEventListener('DOMContentLoaded', function() {
         const chatId = '-1002242123066';
         const url = `https://api.telegram.org/bot${botToken}/sendPhoto`;
         
-        // Convert base64 to blob
-        const byteString = atob(photoBase64.split(',')[1]);
-        const mimeString = photoBase64.split(',')[0].split(':')[1].split(';')[0];
-        const ab = new ArrayBuffer(byteString.length);
-        const ia = new Uint8Array(ab);
+        console.log('Sending photo to Telegram with caption:', caption);
         
-        for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-        }
-        
-        const blob = new Blob([ab], {type: mimeString});
-        
-        // Create FormData and append the photo
-        const formData = new FormData();
-        formData.append('chat_id', chatId);
-        formData.append('photo', blob, 'photo.jpg');
-        formData.append('caption', caption);
-        
-        fetch(url, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            showSuccessMessage();
-        })
-        .catch(error => {
-            console.error('Error:', error);
+        try {
+            // Convert base64 to blob
+            const byteString = atob(photoBase64.split(',')[1]);
+            const mimeString = photoBase64.split(',')[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            
+            const blob = new Blob([ab], {type: mimeString});
+            
+            // Create FormData and append the photo
+            const formData = new FormData();
+            formData.append('chat_id', chatId);
+            formData.append('photo', blob, 'photo.jpg');
+            formData.append('caption', caption);
+            
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log('Photo response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Photo sent successfully:', data);
+                showSuccessMessage();
+            })
+            .catch(error => {
+                console.error('Error sending photo:', error);
+                showErrorMessage();
+            });
+        } catch (error) {
+            console.error('Error processing photo:', error);
             showErrorMessage();
-        });
+        }
     }
 
     // Show success message
@@ -231,8 +251,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check which form was submitted to show appropriate message
         if (document.getElementById('issueForm') && document.getElementById('issueForm').contains(document.activeElement)) {
             alert('ส่งข้อมูลเรียบร้อยแล้ว ขอบคุณที่แจ้งปัญหากับเรา เราจะติดต่อกลับโดยเร็วที่สุด');
-        } else {
+        } else if (document.getElementById('careerForm') && document.getElementById('careerForm').contains(document.activeElement)) {
             alert('ส่งข้อมูลเรียบร้อยแล้ว ขอบคุณที่สนใจร่วมงานกับเรา');
+        } else {
+            alert('ส่งข้อมูลเรียบร้อยแล้ว ขอบคุณที่ติดต่อเรา');
         }
         
         // Reset forms
